@@ -42,7 +42,7 @@ helper 已 **DPI-aware**：`GetSystemMetrics`、截图、`mouse_move` 全部统�
 本地目录方式（开发/内网）：
 
 ```
-dsh plugin --profile <name> add D:\AI_production\dsh-keymouse
+dsh plugin --profile <name> add <path-to-dsh-keymouse>
 ```
 
 npm 方式（发布后）：
