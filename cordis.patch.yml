@@ -1,0 +1,7 @@
+# dsh-keymouse bundle patch: mount the plugin under its package name,
+# resolved through the profile's node_modules. DSH loads lib/index.js and
+# calls apply(ctx) to spawn the helper and register the key/mouse tools + skill.
+
+- insert:
+    - id: tool-keymouse
+      name: '@keymouse/dsh-tool-keymouse'
