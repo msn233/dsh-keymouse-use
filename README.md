@@ -48,7 +48,7 @@ dsh plugin --profile <name> add D:\AI_production\dsh-keymouse
 npm 方式（发布后）：
 
 ```
-dsh plugin --profile <name> add @keymouse/dsh-tool-keymouse
+dsh plugin --profile <name> add @temsmie/dsh-tool-keymouse
 ```
 
 ## 目录结构
