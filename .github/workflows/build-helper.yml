@@ -1,0 +1,42 @@
+name: build-helper
+
+on:
+  push:
+    paths:
+      - 'src/helper.cpp'
+      - '.github/workflows/build-helper.yml'
+  pull_request:
+    paths:
+      - 'src/helper.cpp'
+      - '.github/workflows/build-helper.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up MSYS2 + MinGW-w64 g++
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MSYS
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+
+      - name: Compile helper (g++)
+        shell: msys2 {0}
+        run: |
+          g++ --version
+          g++ -O2 -std=c++17 src/helper.cpp -o bin/helper-x64.exe -luser32 -lwinmm -lgdiplus -lgdi32
+          ls -l bin/helper-x64.exe
+
+      - name: Upload helper artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: helper-x64
+          path: bin/helper-x64.exe
+          if-no-files-found: error
