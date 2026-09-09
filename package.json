@@ -1,7 +1,7 @@
 {
   "name": "@temsmie/dsh-tool-keymouse",
   "description": "Windows key/mouse/screenshot/window automation (SendInput over a persistent helper) for the DeepSeek Harness",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

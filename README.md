@@ -8,7 +8,7 @@ helper 已 **DPI-aware**：`GetSystemMetrics`、截图、`mouse_move` 全部统�
 
 - 键盘：`key_press` / `key_up` / `key_tap`，字母数字、空格回车、F1-F12、方向键、Ctrl/Alt/Shift、Tab、Esc 等。
 - 鼠标：`mouse_press`（按住拖动）、`mouse_move`（绝对物理坐标）、`mouse_roll`（滚轮）。
-- 截图：`screenshot` 抓主屏保存 PNG，返回物理像素尺寸；多模态模型直接看图。
+- 截图：`screenshot` 抓主屏保存 PNG，返回绝对路径与物理像素尺寸；看图能力取决于宿主环境（见「环境与能力边界」）。
 - 窗口：`get_window` / `win_rect`（查位置）、`win_find`（按进程名找窗口）、`win_activate`（唤起，含最小化/托盘）、`win_minimize` / `win_restore` / `win_maximize`、`win_top` / `release_top`（置顶）。
 - 清理：`release_all` 一键抬起所有按住项防卡键；`release_top` 取消所有置顶。
 - 自带常驻 `keymouse` 说明书（runtime skill），模型通过 skill 工具读取使用规则。
@@ -35,7 +35,7 @@ helper 已 **DPI-aware**：`GetSystemMetrics`、截图、`mouse_move` 全部统�
 | `mouse_roll(up, amount?)` | up, amount? | 滚轮滚动 |
 | `release_all()` | 无 | 统一抬起全部按住项 |
 
-典型组合：`win_find('QQ')` → `win_activate(hwnd)` 唤起窗口（不点图标）；`key_press('ctrl')` → `key_tap('s')` → `release_all`；`mouse_press('left')` → `mouse_move(...)` → `release_all`；`screenshot()` → `read_image(path)` 看图再操作。
+典型组合：`win_find('QQ')` → `win_activate(hwnd)` 唤起窗口（不点图标）；`key_press('ctrl')` → `key_tap('s')` → `release_all`；`mouse_press('left')` → `mouse_move(...)` → `release_all`；`screenshot()` →（环境支持看图时）查看图像 → 再定位操作。
 
 ## 安装
 
@@ -115,6 +115,16 @@ npx tsc
 ```
 
 说明：该 junction 仅用于本机编译，不在发布白名单(`files`)内，不影响打包分发。`node_modules` 已 gitignore，`bin/helper-x64.exe`（预编译、按需分发）随包提交。
+
+## 环境与能力边界
+
+- 本插件只做三件事：模拟键鼠输入、截主屏、窗口查询/置顶。**不含识图能力**。
+- `screenshot` 返回 PNG 绝对路径。能否看图由宿主环境决定：
+  - 当前模型支持图像输入 → 用宿主自带的读图能力打开该路径即可。
+  - 模型不支持图像输入 → 需环境另有视觉/OCR 能力：安装提供图像理解/OCR 的 DSH 插件，或换用支持图像输入的模型。
+- 插件不依赖任何特定视觉插件或工具名；`skill` 说明书同样不假设某种识图方式存在，避免在缺该能力的环境里给出无效步骤。
+- 想提升体验：用插件市场（`find_dsh_plugin`）搜 `vision` / `OCR` / `image` 等关键词安装相应插件；或直接在支持图像输入的模型下使用。
+- 键鼠工具本身依赖 Windows 桌面会话（见下）。
 
 ## 平台
 

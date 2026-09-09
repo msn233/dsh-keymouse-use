@@ -4,15 +4,15 @@
 
 ## 坐标与键名
 
-- 坐标：绝对屏幕**物理**像素（helper 已 DPI-aware，无缩放换算），主屏左上角为 (0,0)，单屏。x 向右、y 向下。截图分辨率即物理像素，识图看到的坐标可直接用于 mouse_move，无需换算。
+- 坐标：绝对屏幕**物理**像素（helper 已 DPI-aware，无缩放换算），主屏左上角为 (0,0)，单屏。x 向右、y 向下。截图分辨率即物理像素，从图像中读到的坐标可直接用于 mouse_move，无需换算。
 - 键名（小写英文）：字母 `a`-`z`、数字 `0`-`9`、`space`、`enter`、`tab`、`esc`、`backspace`、`delete`、`insert`、`home`、`end`、`pageup`、`pagedown`、方向键 `up`/`down`/`left`/`right`、`f1`-`f12`、修饰键 `ctrl`、`alt`、`shift`、`win`、`capslock`。
 - 鼠标按钮：`left`、`right`、`middle`、`x1`、`x2`。
 
 ## 工具
 
 ### screenshot()
-截取当前主屏（全屏）保存为 PNG，返回图片路径与尺寸。模型是多模态的，可直接看：
-screenshot() → 拿到 path → read_image(path) 查看屏幕 → 再做键鼠操作。
+截取当前主屏（全屏）保存为 PNG，返回绝对路径 path 与物理像素尺寸 width/height。
+本插件只负责截图，不提供识图；能否看图取决于宿主环境：模型支持图像输入时可用宿主的读图能力打开该 path，否则需环境另有视觉/OCR 能力或换用支持图像输入的模型。
 
 ### get_window()
 获取当前前台窗口信息：窗口句柄 hwnd、标题 title、进程名 process、pid、位置 (x,y,w,h)。
@@ -76,7 +76,7 @@ screenshot() → 拿到 path → read_image(path) 查看屏幕 → 再做键鼠�
 - Ctrl+O 打开：key_press('ctrl')；key_tap('o')；release_all。
 - 左键拖拽：mouse_press('left')；mouse_move(x2,y2)；mouse_move(x1,y1)；release_all。
 - 滚到页面底部：mouse_roll(false)；mouse_roll(false)；…（可多次）。
-- 视觉闭环：screenshot() 得 path → read_image(path) 看屏幕 → 键鼠操作。
+- 截图定位：screenshot() 得 path →（环境支持看图时）查看屏幕 → 据此 mouse_move 定位。
 - 唤起程序窗口（不点图标）：win_find('QQ') → win_activate(hwnd) → 前台出现 QQ 主窗口（托盘隐藏/最小化也能唤回）。
 
 ## 规范

@@ -388,7 +388,7 @@ function apply(ctx: Context, config: KeymouseConfig = {}) {
 
   register(defineTool({
     name: 'screenshot',
-    description: '截取当前主屏(全屏)保存为 PNG,返回图片路径与尺寸。之后用 read_image 读取该路径即可查看屏幕内容,再配合键鼠操作。',
+    description: '截取当前主屏(全屏)保存为 PNG,返回绝对路径与物理像素尺寸。本插件只提供截图,不提供识图;能否查看该图像取决于宿主环境(模型是否支持图像输入,或环境是否提供视觉/OCR 能力)。',
     parameters: {},
     output: { schema: OUTPUT_SCHEMA, render: renderScreenshot },
     async execute(_args: Record<string, never>, exec) {
